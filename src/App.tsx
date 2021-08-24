@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@apollo/client';
+import LazyLoad from 'react-lazyload';
 
 import { GET_SEARCHED_ANIME } from './queries/queries';
 import { formatDescription } from './utils/strings';
@@ -99,13 +100,15 @@ const App = (): JSX.Element => {
                 <div className="w-full">
                 {data.Page.media.map(({ id, title, description, averageScore, coverImage }: { id: number, title: { romaji: string }, description: string, averageScore: number, coverImage: { large: string }}) => (
                     <div className="my-4 rounded-lg shadow-md border flex cursor-pointer hover:border-gray-400" key={id}>
-                      <div className="h-80 w-1/5 bg-red-300">
+                      <div className="h-80 w-1/5 bg-red-300 rounded-lg">
                         <img className="object-cover h-full w-full rounded-l-lg" src={coverImage.large} alt="cover" />
                       </div>
-                      <div className="p-4 w-4/5">
-                        <p>{title.romaji}</p>
-                        <p>{formatDescription(description)}</p>
-                        <p>{averageScore}</p>
+                      <div className="py-6 px-8 w-4/5">
+                        <div className="flex items-center justify-between mb-8">
+                          <h1 className="text-lg font-medium cursor-text">{title.romaji}</h1>
+                          <p><span className="font-medium cursor-text">Score:</span> {averageScore}</p>
+                        </div>
+                        <p className="cursor-text text-gray-500">{formatDescription(description)}</p>
                       </div>
                     </div>
                   ))
