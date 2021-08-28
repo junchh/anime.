@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useQuery } from '@apollo/client';
-import LazyLoad from 'react-lazyload';
 
 import { GET_SEARCHED_ANIME } from './queries/queries';
 import { formatDescription } from './utils/strings';
@@ -20,30 +19,6 @@ const App = (): JSX.Element => {
       setTotalPage(data.Page.pageInfo.lastPage);
     }
   });
-
-  if(error) console.log(error);
-
-  const Test = () => {
-    const elements = [];
-    for(let i = 1; i <= totalPage; i++) {
-      if(i === page) {
-        elements.push(
-          <button onClick={() => setPage(i)} aria-current="page" className="z-10 bg-indigo-50 border-green-500 text-green-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-            {i}
-          </button>
-        );
-      } else {
-        elements.push(
-          <button onClick={() => setPage(i)} aria-current="page" className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
-            {i}
-          </button>
-        );
-      }
-    }
-    return elements;
-  };
-
-  
 
   return (
     <div className="w-2/3 m-auto p-20 pt-16 flex flex-col items-center">
@@ -89,7 +64,21 @@ const App = (): JSX.Element => {
                       <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
                     </svg>
                   </button>
-                  {Test()}
+                  {[...Array(totalPage)].map((value, i) => {
+                    if(i + 1 === page) {
+                      return (
+                        <button onClick={() => setPage(i + 1)} aria-current="page" className="z-10 bg-indigo-50 border-green-500 text-green-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                          {i + 1}
+                        </button>
+                      );
+                    } else {
+                      return (
+                        <button onClick={() => setPage(i + 1)} aria-current="page" className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                          {i + 1}
+                        </button>
+                      );
+                    }
+                  })}
                   <button className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
                     <span className="sr-only">Next</span>
                     <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
